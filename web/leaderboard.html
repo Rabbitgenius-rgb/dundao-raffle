@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0b0e16"><meta name="robots" content="noindex,nofollow">
+<title>锻刀天榜 · 锻刀大会</title><link rel="icon" href="data:,">
+<link rel="stylesheet" href="./style.css"><link rel="stylesheet" href="./leaderboard.css">
+</head>
+<body><main class="rank-shell">
+<header class="rank-header"><a class="rank-brand" href="./">✦ <span>断刀 / 锻刀大会</span></a><a class="rank-back" href="./">返回锻造工坊 ↗</a></header>
+<section class="rank-intro"><div><p class="eyebrow">THE FORGE / HALL OF BLADES</p><h1>锻刀<em>天榜</em></h1><p class="rank-subtitle" id="activity-name">锻刀大会</p><p class="rank-rule">十五锤之后，让锋芒留下名字。<br>同名取最早成绩，同分并列。姓名脱敏展示。</p></div><div class="rank-tools"><button type="button" id="refresh-board" class="rank-button">刷新榜单</button><button type="button" id="find-me" class="rank-button subdued" disabled>定位我的成绩</button><span id="update-time">正在连接榜单…</span></div></section>
+<p id="rank-error" class="rank-error" role="alert" hidden></p>
+<section class="rank-stats" aria-label="榜单概况"><div><span>已上榜 / 参与名额</span><strong id="rank-count">—</strong></div><div><span>最高分</span><strong id="rank-best">—</strong></div><div><span>我的名次</span><strong id="rank-self" class="self-value">—</strong></div></section>
+<section id="rank-content" aria-label="锻刀排行榜" aria-busy="true"><div class="rank-empty"><span>✦</span><h2>正在展开天榜</h2><p>等待工坊传来最新的成刀成绩。</p></div></section>
+<footer class="rank-footer"><span>只收录正式场成刀 · 测试与自由试玩不入榜</span><span>每 10 秒自动更新 · 完整姓名仅供组织者查看</span></footer>
+</main><script type="module" src="./leaderboard.mjs"></script></body></html>

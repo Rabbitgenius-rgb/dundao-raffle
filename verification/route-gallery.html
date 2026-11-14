@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#10141e">
+<title>十二系 · 七阶刀形对照</title>
+  <style>
+    :root{color-scheme:dark;--bg:#10141e;--panel:#181e2a;--line:#343d50;--muted:#a9b3c7;--text:#efede7;--gold:#e4bf7c}
+    *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.7 "PingFang SC","Microsoft YaHei",sans-serif}
+    button,a,input{font:inherit}button{cursor:pointer}button:focus-visible,a:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--gold);outline-offset:4px}
+    button{border:1px solid var(--line);color:var(--text);background:#1c2330;padding:9px 15px;border-radius:3px}
+    button:hover{border-color:#8491aa}button[aria-pressed="true"]{background:#312d26;border-color:var(--gold);color:#ffe1a8}button:disabled{opacity:.45;cursor:wait}
+    a{color:#e2c18d;text-decoration:none}a:hover{text-decoration:underline}
+    .shell{max-width:1480px;margin:auto;padding:28px 28px 48px}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:24px}
+    .eyebrow{margin:0 0 4px;font:10px/1.5 "Courier New",monospace;letter-spacing:3px;color:#b9a58c}h1{margin:0;font-size:26px;letter-spacing:2px;font-weight:600}
+    .intro{margin:8px 0 0;color:var(--muted);max-width:760px}.return{white-space:nowrap;font-size:12px;margin-top:6px}
+    .controls{margin-top:24px;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;gap:15px}
+    .control-row{display:flex;align-items:center;gap:15px;flex-wrap:wrap}.control-row[hidden]{display:none}.control-label{font-size:11px;color:var(--muted);letter-spacing:1px;flex:0 0 48px}
+    .button-group{display:flex;gap:7px;flex-wrap:wrap}.route-button{display:inline-flex;align-items:center;gap:8px}.route-dot{width:7px;height:7px;background:var(--dot);box-shadow:0 0 10px color-mix(in srgb,var(--dot),transparent 55%)}
+    .damage-toggle{display:flex;align-items:center;gap:9px;margin-left:auto;font-size:12px;color:#d8dfeb;cursor:pointer}.damage-toggle input{accent-color:#e4bf7c;width:16px;height:16px;margin:0}
+    .view-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin:24px 0 14px}h2{font-size:18px;letter-spacing:1px;margin:0;font-weight:500}.view-heading p{margin:4px 0 0;color:var(--muted);font-size:12px}.status{font-size:11px;color:var(--muted);white-space:nowrap;margin:0}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;align-items:start}.grid.god{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .stage-card{background:var(--panel);border:1px solid var(--line);border-radius:4px;overflow:hidden;min-width:0}.stage-card.legendary{border-color:#766143}
+    .card-top{padding:14px 15px 10px;display:flex;align-items:center;justify-content:space-between;gap:10px}.card-top h3{font-size:15px;margin:0;font-weight:600;letter-spacing:1px}.card-index{color:#98a4bb;font:10px "Courier New",monospace;letter-spacing:1px}
+    .preview{aspect-ratio:3/4;background:#151925;position:relative;overflow:hidden}.preview img{width:100%;height:100%;display:block;object-fit:contain;image-rendering:pixelated}.preview .placeholder{position:absolute;inset:0;display:grid;place-items:center;color:#7c89a2;font-size:12px;letter-spacing:1px}.preview img:not([src]){visibility:hidden}
+    .damage-badge{position:absolute;left:12px;bottom:11px;background:#302026e8;color:#ffb8a9;border:1px solid #755057;padding:3px 7px;font-size:10px;letter-spacing:1px}
+    .card-copy{padding:14px 15px 17px;min-height:153px;border-top:1px solid #2c3547}.feature-label{font-size:15px;line-height:1.5;letter-spacing:1px;margin:0 0 7px}.feature-description{font-size:12px;line-height:1.8;color:#bcc5d6;margin:0}.fixture-score{margin:12px 0 0;color:#8f9db4;font:10px/1.6 "Courier New","PingFang SC",monospace;letter-spacing:.4px}.motion-button{margin-top:12px;padding:6px 12px;font-size:12px;color:#e5c68f;background:#242937}
+    details{margin-top:24px;border:1px solid var(--line);padding:11px 15px;color:var(--muted);font-size:12px}summary{cursor:pointer;color:#d4d9e4}details p{margin:9px 0 0}.empty-error{padding:30px;border:1px solid #945d54;color:#ffd3c8;grid-column:1/-1}
+    #render-host{position:fixed;left:-10000px;top:0;width:720px;height:960px;pointer-events:none;overflow:hidden}#render-host canvas{display:block}
+    .motion-dialog{width:min(1120px,calc(100vw - 32px));max-height:calc(100dvh - 32px);margin:auto;padding:0;border:1px solid #667086;border-radius:5px;background:#111722;color:var(--text);overflow:auto;box-shadow:0 20px 100px #0009}.motion-dialog::backdrop{background:#070b14dc;backdrop-filter:blur(5px)}
+    .motion-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;padding:18px 20px;border-bottom:1px solid var(--line)}.motion-heading h2{font-size:19px}.motion-heading p{margin:5px 0 0;color:#aab5ca;font-size:12px}.motion-heading button{flex:0 0 auto;font-size:12px;padding:7px 11px}
+    #motion-host{height:min(62dvh,660px);min-height:300px;width:100%;overflow:hidden;background:#151925}#motion-host canvas{display:block;width:100%;height:100%}
+    .motion-footer{display:flex;align-items:center;gap:18px;padding:15px 20px;border-top:1px solid var(--line)}.motion-footer button{flex:0 0 auto;background:#3b3023;color:#ffe3aa;border-color:#806644}.motion-footer p{font-size:12px;color:#bac5d8;margin:0}.motion-footer small{display:block;color:#8795ad;font-size:10px;margin-top:3px}
+    @media(max-width:1100px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.shell{padding:22px 20px 40px}}
+    @media(max-width:850px){.grid,.grid.god{grid-template-columns:repeat(2,minmax(0,1fr))}.damage-toggle{margin-left:0}.top{gap:15px}.return{font-size:11px}.card-copy{min-height:166px}}
+    @media(max-width:540px){.shell{padding:20px 14px 30px}.top{display:block}.return{display:inline-block;margin-top:12px}h1{font-size:22px}.control-label{flex-basis:100%}.control-row{gap:8px}.grid,.grid.god{grid-template-columns:1fr}.view-heading{display:block}.status{margin-top:8px}.card-copy{min-height:0}.controls{padding:16px 0}.route-button{padding:8px 10px}.motion-heading{padding:14px;gap:10px}.motion-heading h2{font-size:16px}.motion-footer{padding:13px 14px;gap:12px;align-items:flex-start}.motion-footer p{font-size:11px}.motion-dialog{width:calc(100vw - 16px);max-height:calc(100dvh - 16px)}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <header class="top">
+      <div><p class="eyebrow">FORGE / FORM ATLAS</p><h1>十二系 · 七阶刀形对照</h1><p class="intro">逐条查看七个品质阶段，或横向比较十二系神品。每张样张使用游戏中的同一套立体模型和灯光，以固定镜头、统一比例呈现。</p></div>
+      <a class="return" href="../web/">进入锻造游戏 ↗</a>
+    </header>
+    <section class="controls" aria-label="对照条件">
+      <div class="control-row"><span class="control-label">视图</span><div class="button-group" id="mode-buttons"><button type="button" data-mode="tiers" aria-pressed="true">单系七阶进化</button><button type="button" data-mode="god" aria-pressed="false">十二系神品对照</button></div><label class="damage-toggle"><input type="checkbox" id="damage-toggle">显示同一组局部损伤</label></div>
+      <div class="control-row" id="route-controls"><span class="control-label">路线</span><div class="button-group" id="route-buttons"></div></div>
+    </section>
+    <div class="view-heading"><div><h2 id="view-title">正在准备对照样张</h2><p id="view-description">验证夹具 · 指定路线与分数，不代表一次真实抽奖结果。</p></div><p class="status" id="status" role="status" aria-live="polite">初始化生产渲染器…</p></div>
+    <section class="grid" id="grid" aria-label="品质阶段样张" aria-busy="true"></section>
+    <details><summary>样张的验证条件</summary><p>所有样张使用同一种起始刀胚：直刃 / 缠绳柄 / 圆盘护手；固定 15 锤、成长值 18、外观种子 12345。分数为各品质区间中的代表值，神品样张取 100,000 分。受损模式固定为刃身与护手两处局部损伤。</p><p>品质与阶段文案直接读取游戏的共享定义。这里仅指定验证状态，不会保存抽奖成绩，也不会修改游戏的路线或得分概率。静态样张隐藏锻造台，便于比较刀形与法阵；每张卡片的动态预览使用游戏中的实际旋转、元素特效和落锤动画。</p></details>
+  </main>
+  <dialog class="motion-dialog" id="motion-dialog" aria-labelledby="motion-title" aria-describedby="motion-fixture">
+    <div class="motion-heading"><div><p class="eyebrow">LIVE FORM PREVIEW / 固定状态</p><h2 id="motion-title">刀形动态预览</h2><p id="motion-fixture"></p></div><button type="button" id="motion-close" aria-label="关闭动态预览" autofocus>关闭 ×</button></div>
+    <div id="motion-host" role="img" aria-label="刀形与元素特效的实时三维预览"></div>
+    <div class="motion-footer"><button type="button" id="motion-strike">预览落锤</button><button type="button" id="motion-sound" aria-pressed="true" aria-label="预览音效">音效 开</button><div><p id="motion-status" role="status" aria-live="polite">成刀旋转与元素特效。</p><small>验证夹具 · 不进行随机抽奖，不保存成绩。</small></div></div>
+  </dialog>
+  <div id="render-host" aria-hidden="true"></div>
+  <script type="module">
+    import * as THREE from '../web/vendor/three.module.js';
+    import { ROUTES, QUALITY_TIERS, TOTAL_HITS, MAX_SCORE, createGame, formatScore } from '../web/game.mjs';
+    import { getEvolutionInfo } from '../web/evolution.mjs';
+    import { ForgeScene } from '../web/scene.mjs';
+
+    const WIDTH=720, HEIGHT=960;
+    const grid=document.querySelector('#grid');
+    const status=document.querySelector('#status');
+    const routeButtons=document.querySelector('#route-buttons');
+    const modeButtons=document.querySelector('#mode-buttons');
+    const damageToggle=document.querySelector('#damage-toggle');
+    const renderHost=document.querySelector('#render-host');
+    const motionDialog=document.querySelector('#motion-dialog');
+    const motionHost=document.querySelector('#motion-host');
+    const motionStrike=document.querySelector('#motion-strike');
+    const motionStatus=document.querySelector('#motion-status');
+    const hash=new URLSearchParams(location.hash.slice(1));
+    let selectedRoute=ROUTES.some(route=>route.id===hash.get('route'))?hash.get('route'):ROUTES[0].id;
+    let mode=hash.get('mode')==='god'?'god':'tiers';
+    let damaged=hash.get('damage')==='1';
+    let forge, camera, renderToken=0, rendering=false;
+    let previewOpen=false,previewBusy=false,previewToken=0,previewState=null,previewTrigger=null;
+    const snapshots=new Map();
+    const base=createGame({blade:'straight',handle:'wrap',guard:'disc'},()=>0.271828);
+    const representativeScore=level=>level===QUALITY_TIERS.length-1?MAX_SCORE:Math.floor((QUALITY_TIERS[level].min+QUALITY_TIERS[level+1].min)/2);
+
+    function fixture(route,level,withDamage=damaged){
+      return {...base,route,hits:TOTAL_HITS,growth:18,score:representativeScore(level),complete:true,appearanceSeed:12345,
+        damage:withDamage?[{id:'blade-sample',site:1,severity:2},{id:'guard-sample',site:4,severity:1}]:[]};
+    }
+
+    function staticPose(){
+      forge.poseSword(0);
+      // A constant slight oblique angle reveals depth without rotating each card.
+      forge.swordPose.rotation.y=0.3;
+      forge.world.visible=false;
+      forge.fireLight.intensity=27;
+      if(forge.effects){forge.effects.transition=null;forge.effects.update(forge.effects.clockOffset||0);}
+      forge.swordPose.updateWorldMatrix(true,true);
+    }
+
+    async function prepareSharedCamera(){
+      const bounds=new THREE.Box3();
+      let count=0;
+      // Fit all actual models AND their production rings at the same still phase.
+      // This preserves one scale without cropping the newly added God-tier orbits.
+      for(const route of ROUTES)for(let level=0;level<QUALITY_TIERS.length;level++){
+        forge.setState(fixture(route.id,level,false),'pick');staticPose();
+        bounds.union(new THREE.Box3().setFromObject(forge.swordPose));
+        count++;
+        if(count%QUALITY_TIERS.length===0){status.textContent='校准统一画幅 '+count+' / '+ROUTES.length*QUALITY_TIERS.length;await new Promise(resolve=>requestAnimationFrame(resolve));}
+      }
+      const center=bounds.getCenter(new THREE.Vector3());
+      const direction=new THREE.Vector3(0.86,0.47,1.1).normalize();
+      camera=new THREE.OrthographicCamera(-1,1,1,-1,0.1,100);
+      camera.position.copy(center).addScaledVector(direction,24);
+      camera.lookAt(center);camera.updateMatrixWorld(true);
+      const projected=new THREE.Box3();
+      for(const x of [bounds.min.x,bounds.max.x])for(const y of [bounds.min.y,bounds.max.y])for(const z of [bounds.min.z,bounds.max.z]){
+        projected.expandByPoint(new THREE.Vector3(x,y,z).applyMatrix4(camera.matrixWorldInverse));
+      }
+      const size=projected.getSize(new THREE.Vector3());
+      const aspect=WIDTH/HEIGHT;
+      const height=Math.max(size.y,size.x/aspect)*1.14;
+      camera.left=-height*aspect/2;camera.right=height*aspect/2;
+      camera.top=height/2;camera.bottom=-height/2;camera.updateProjectionMatrix();
+    }
+
+    function capture(state){
+      if(previewOpen)throw new Error('动态预览期间不能生成静态样张。');
+      const cacheKey=[state.route,state.score,state.damage.length?'damaged':'intact'].join(':');
+      if(snapshots.has(cacheKey))return snapshots.get(cacheKey);
+      forge.setState(state,'pick');
+      staticPose();
+      forge.renderer.render(forge.scene,camera);
+      const snapshot={url:forge.renderer.domElement.toDataURL('image/png'),fingerprint:forge.sword.userData.fingerprint,voxelCount:forge.sword.userData.voxelCount};
+      snapshots.set(cacheKey,snapshot);
+      return snapshot;
+    }
+
+    function makeCard(route,level){
+      const state=fixture(route.id,level);
+      const info=getEvolutionInfo(state);
+      const tier=QUALITY_TIERS[level];
+      const card=document.createElement('article');
+      card.className='stage-card'+(info.legendary?' legendary':'');
+      card.dataset.route=route.id;card.dataset.level=String(level);
+      const top=document.createElement('div');top.className='card-top';
+      const title=document.createElement('h3');title.style.color=mode==='god'?route.color:tier.color;
+      title.textContent=mode==='god'?route.name:tier.name;
+      const index=document.createElement('span');index.className='card-index';index.textContent=mode==='god'?'GOD / 07':String(level+1).padStart(2,'0')+' / 07';
+      top.append(title,index);
+      const preview=document.createElement('div');preview.className='preview';
+      const image=document.createElement('img');image.width=WIDTH;image.height=HEIGHT;
+      image.alt=route.name+' · '+tier.name+' · '+info.featureLabel+(damaged?'，两处局部损伤':'，完整形态');
+      const placeholder=document.createElement('span');placeholder.className='placeholder';placeholder.textContent='正在生成模型样张…';
+      preview.append(image,placeholder);
+      if(damaged){const badge=document.createElement('span');badge.className='damage-badge';badge.textContent='受损样张';preview.append(badge);}
+      const copy=document.createElement('div');copy.className='card-copy';
+      const feature=document.createElement('p');feature.className='feature-label';feature.textContent=info.featureLabel;
+      const description=document.createElement('p');description.className='feature-description';description.textContent=info.description;
+      const score=document.createElement('p');score.className='fixture-score';score.textContent='验证分数 '+formatScore(state.score)+' · '+tier.name;
+      const motionButton=document.createElement('button');motionButton.type='button';motionButton.className='motion-button';motionButton.textContent='查看动态';motionButton.disabled=true;
+      motionButton.setAttribute('aria-label','查看'+route.name+' · '+tier.name+'的动态');
+      motionButton.addEventListener('click',()=>openPreview(state,motionButton));
+      copy.append(feature,description,score,motionButton);card.append(top,preview,copy);
+      return {card,image,placeholder,state,motionButton};
+    }
+
+    function syncControls(){
+      for(const button of routeButtons.querySelectorAll('button'))button.setAttribute('aria-pressed',String(button.dataset.route===selectedRoute));
+      for(const button of modeButtons.querySelectorAll('button'))button.setAttribute('aria-pressed',String(button.dataset.mode===mode));
+      damageToggle.checked=damaged;
+      document.querySelector('#route-controls').hidden=mode==='god';
+      const params=new URLSearchParams({route:selectedRoute,mode,damage:damaged?'1':'0'});
+      history.replaceState(null,'','#'+params.toString());
+    }
+
+    async function renderCards(){
+      if(!forge||!camera||previewOpen)return;
+      const token=++renderToken;
+      rendering=true;
+      syncControls();
+      const route=ROUTES.find(item=>item.id===selectedRoute);
+      document.querySelector('#view-title').textContent=mode==='god'?'十二系神品 · 最终形态对照':route.name+' · 七阶进化';
+      document.querySelector('#view-description').textContent=(damaged?'相同局部损伤条件':'完整形态')+' · 固定斜视镜头与比例 · 验证夹具，非随机抽奖结果';
+      grid.className='grid '+mode;grid.setAttribute('aria-busy','true');
+      const entries=mode==='god'?ROUTES.map(item=>makeCard(item,QUALITY_TIERS.length-1)):QUALITY_TIERS.map((_,level)=>makeCard(route,level));
+      grid.replaceChildren(...entries.map(entry=>entry.card));
+      try{
+        for(let index=0;index<entries.length;index++){
+          status.textContent='生成样张 '+(index+1)+' / '+entries.length;
+          // Let controls and placeholders paint; only one shared renderer is used.
+          await new Promise(resolve=>requestAnimationFrame(resolve));
+          if(token!==renderToken)return;
+          const entry=entries[index];const snapshot=capture(entry.state);
+          entry.image.src=snapshot.url;
+          entry.card.dataset.fingerprint=snapshot.fingerprint||'';
+          entry.card.dataset.voxelCount=String(snapshot.voxelCount||0);
+          await entry.image.decode();
+          if(token!==renderToken)return;
+          entry.placeholder.remove();
+        }
+        for(const entry of entries)entry.motionButton.disabled=false;
+        status.textContent=entries.length+' 张样张 · 共 '+ROUTES.length*QUALITY_TIERS.length+' 个品质形态';
+      }catch(error){
+        if(token!==renderToken)return;
+        status.textContent='样张生成失败，请检查页面控制台。';console.error(error);
+      }finally{
+        if(token===renderToken){rendering=false;grid.setAttribute('aria-busy','false');}
+      }
+    }
+
+    function clearPreviewTransient(){
+      if(forge.strikeState){const strike=forge.strikeState;forge.strikeState=null;strike.resolve(false);}
+      forge.restHammer();
+      for(const particle of forge.particles)forge.scene.remove(particle.mesh);
+      forge.particles.length=0;forge.pulse=0;forge.bladeLight.intensity=3;
+      if(forge.effects)forge.effects.transition=null;
+      forge.previousTime=undefined;forge.hiddenAt=null;
+    }
+
+    function openPreview(state,trigger){
+      if(!forge||rendering||previewOpen)return;
+      renderToken++;previewToken++;previewOpen=true;previewBusy=false;previewState=state;previewTrigger=trigger;
+      const info=getEvolutionInfo(state);
+      document.querySelector('#motion-title').textContent=info.routeName+' · '+info.qualityName+' · '+info.featureLabel;
+      document.querySelector('#motion-fixture').textContent='验证夹具 · '+formatScore(state.score)+' 分 · '+(state.damage.length?'两处局部损伤':'完整形态')+' · 使用游戏实际模型与特效';
+      motionHost.setAttribute('aria-label',info.routeName+'、'+info.qualityName+'的三维动态预览');
+      motionStatus.textContent=forge.motion.matches?'成刀展示已遵循系统的减少动态效果设置。':'成刀旋转与元素特效；可以预览一次从上一品质到当前品质的落锤。';
+      motionStrike.disabled=false;motionStrike.textContent='预览落锤';
+      forge.renderer.setAnimationLoop(null);clearPreviewTransient();
+      motionDialog.showModal();
+      motionHost.append(forge.renderer.domElement);forge.host=motionHost;
+      forge.world.visible=true;forge.resizeObserver.observe(motionHost);forge.resize();
+      forge.setState(state,'result');
+      forge.frame(performance.now());
+      document.addEventListener('visibilitychange',forge.visibilityHandler);
+      forge.renderer.setAnimationLoop(time=>forge.frame(time));
+    }
+
+    async function previewStrike(){
+      if(!previewOpen||previewBusy||!previewState)return;
+      previewBusy=true;motionStrike.disabled=true;motionStrike.textContent='正在落锤…';
+      const token=previewToken;
+      const target=previewState;const info=getEvolutionInfo(target);
+      const beforeScore=info.level>0?QUALITY_TIERS[info.level].min-1:Math.max(0,target.score-3200);
+      const before={...target,hits:TOTAL_HITS-1,score:beforeScore,growth:Math.max(0,target.growth-1),complete:false,lastEvent:null};
+      const event={kind:info.legendary?'awakening':info.level>0?'surge':'growth',title:info.featureLabel,description:info.description,delta:target.score-beforeScore,nominalDelta:target.score-beforeScore,hit:TOTAL_HITS,routeRevealed:false};
+      const after={...target,lastEvent:event};
+      clearPreviewTransient();forge.world.visible=true;forge.setState(before,'forge');
+      motionStatus.textContent='固定第 14 → 15 锤：等待锤面接触后显露'+info.qualityName+'形态。';
+      try{
+        const completed=await forge.strike(()=>{
+          if(token!==previewToken||!previewOpen)return;
+          forge.setState(after,'forge');
+          motionStatus.textContent='接触完成 · '+info.featureLabel+' · 进化特效播放中';
+        },event);
+        if(!completed||token!==previewToken||!previewOpen)return;
+        forge.setState(after,'result');
+        motionStatus.textContent=forge.motion.matches
+          ? '落锤预览完成，'+info.qualityName+'成刀按减少动态效果设置展示。'
+          : '落锤预览完成，继续查看'+info.qualityName+'成刀的旋转与特效。';
+      }catch(error){
+        if(token===previewToken&&previewOpen){motionStatus.textContent='落锤预览未完成，请检查页面控制台。';console.error(error);}
+      }finally{
+        if(token===previewToken&&previewOpen){previewBusy=false;motionStrike.disabled=false;motionStrike.textContent='再次预览落锤';}
+      }
+    }
+
+    function closePreview(){
+      if(!previewOpen)return;
+      forge.audio.stop();
+      previewOpen=false;previewToken++;previewBusy=false;
+      forge.renderer.setAnimationLoop(null);
+      document.removeEventListener('visibilitychange',forge.visibilityHandler);
+      clearPreviewTransient();forge.resizeObserver.disconnect();
+      renderHost.append(forge.renderer.domElement);forge.host=renderHost;
+      forge.renderer.setSize(WIDTH,HEIGHT,false);
+      forge.setState(previewState,'pick');staticPose();
+      motionStrike.disabled=false;motionStrike.textContent='预览落锤';
+      const focus=previewTrigger;previewState=null;previewTrigger=null;
+      if(focus?.isConnected)focus.focus({preventScroll:true});
+    }
+
+    document.querySelector('#motion-close').addEventListener('click',()=>motionDialog.close());
+    motionDialog.addEventListener('close',closePreview);
+    motionStrike.addEventListener('click',previewStrike);
+    document.querySelector('#motion-sound').addEventListener('click',event=>{
+      if(!forge)return;
+      forge.audio.setEnabled(!forge.audio.enabled);
+      event.currentTarget.setAttribute('aria-pressed',String(forge.audio.enabled));
+      event.currentTarget.textContent=forge.audio.enabled?'音效 开':'音效 关';
+    });
+
+    for(const route of ROUTES){
+      const button=document.createElement('button');button.type='button';button.className='route-button';button.dataset.route=route.id;
+      const dot=document.createElement('span');dot.className='route-dot';dot.style.setProperty('--dot',route.color);dot.setAttribute('aria-hidden','true');
+      button.append(dot,document.createTextNode(route.name));routeButtons.append(button);
+    }
+    routeButtons.addEventListener('click',event=>{const button=event.target.closest('button[data-route]');if(button){selectedRoute=button.dataset.route;renderCards();}});
+    modeButtons.addEventListener('click',event=>{const button=event.target.closest('button[data-mode]');if(button){mode=button.dataset.mode;renderCards();}});
+    damageToggle.addEventListener('change',()=>{damaged=damageToggle.checked;renderCards();});
+
+    async function start(){
+      try{
+        forge=new ForgeScene(renderHost);
+        // Gallery owns still captures; do not leave the production animation loop
+        // or visibility-resume hook running behind the finished static images.
+        forge.renderer.setAnimationLoop(null);
+        document.removeEventListener('visibilitychange',forge.visibilityHandler);
+        forge.resizeObserver.disconnect();
+        forge.renderer.setSize(WIDTH,HEIGHT,false);
+        await prepareSharedCamera();
+        await renderCards();
+      }catch(error){
+        status.textContent='无法建立 3D 对照视图。';grid.setAttribute('aria-busy','false');
+        const message=document.createElement('p');message.className='empty-error';message.textContent='模型样张未能生成，请检查浏览器是否支持 WebGL 2，并查看控制台错误。';grid.replaceChildren(message);console.error(error);
+      }
+    }
+    window.addEventListener('pagehide',event=>{if(!event.persisted){renderToken++;previewToken++;previewOpen=false;forge?.dispose();}});
+    start();
+  </script>
+</body>
+</html>

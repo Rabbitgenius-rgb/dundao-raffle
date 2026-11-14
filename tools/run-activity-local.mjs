@@ -1,0 +1,10 @@
+import {readFileSync} from 'node:fs';
+import {fileURLToPath} from 'node:url';
+import {ActivityStore} from '../server/store.mjs';
+import {createApp} from '../server/server.mjs';
+const credentials=JSON.parse(readFileSync(new URL('../private/activity-credentials.json',import.meta.url)));
+const store=new ActivityStore({filename:fileURLToPath(new URL('../private/local-activity/activity.sqlite',import.meta.url)),title:'锻刀大会 · 本地验收'});
+store.expandCapacity(200);
+const server=createApp({store,origin:'http://127.0.0.1:8081',adminHash:credentials.adminHash});
+server.listen(8081,'127.0.0.1',()=>console.log('活动本地预览：http://127.0.0.1:8081/；管理页 /admin'));
+for(const signal of ['SIGINT','SIGTERM'])process.once(signal,()=>server.close(()=>{store.close();process.exit(0);}));
